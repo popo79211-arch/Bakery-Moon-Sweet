@@ -25,15 +25,15 @@ function useLocal(key,init){
 // ---------------- MOCK DATA -----------------
 const SAMPLE_PRODUCTS = [
   {id:'1',name:'เค้กช็อกโกแลต',price:120,category:'เค้ก',desc:'เค้กช็อกโกแลตเข้มข้น เนื้อนุ่มชุ่มฉ่ำ',rating:0, image:'https://image.makewebcdn.com/makeweb/m_1920x0/I1MJQjJJO/Cake/S__14204991.jpg'},
-  {id:'2',name:'เค้กส้ม',price:100,category:'เค้ก',desc:'เค้กส้มสดชื่น หวานอมเปรี้ยว',rating:0, image:'https://images.unsplash.com/photo-1562776383-a7c87c24a613?q=80&w=1974&auto=format&fit=crop'},
-  {id:'3',name:'ทาร์ตไข่',price:45,category:'พาย/ทาร์ต',desc:'ทาร์ตไข่หอมหวาน เนื้อนุ่มละมุน',rating:0, image:'https://images.unsplash.com/photo-1628173541457-4148e6c43c44?q=80&w=1974&auto=format&fit=crop'},
-  {id:'4',name:'พายแอปเปิ้ล',price:65,category:'พาย/ทาร์ต',desc:'พายแอปเปิ้ลกรอบนอกนุ่มใน ไส้แน่น',rating:0, image:'https://images.unsplash.com/photo-1587399433431-7e871e459c00?q=80&w=1974&auto=format&fit=crop'},
-  {id:'5',name:'คุกกี้เนยสด',price:40,category:'คุกกี้',desc:'คุกกี้เนยสดหอมๆ กรอบอร่อย',rating:0, image:'https://images.unsplash.com/photo-1558961363-fa499c016e10?q=80&w=1974&auto=format&fit=crop'},
-  {id:'6',name:'ขนมปังไส้หมูหยอง',price:35,category:'ขนมปัง',desc:'ขนมปังนุ่มๆ กับหมูหยองเต็มคำ',rating:0, image:'https://images.unsplash.com/photo-1622323862141-94577884784a?q=80&w=1974&auto=format&fit=crop'},
-  {id:'7',name:'ทอฟฟี่เค้กคลาสสิก',price:90,category:'เค้ก',desc:'ทอฟฟี่เค้กรสชาติคลาสสิก หวานมัน',rating:0, image:'https://images.unsplash.com/photo-1582855118744-84d4b17b621e?q=80&w=1974&auto=format&fit=crop'},
-  {id:'8',name:'แฮมชีส',price:55,category:'ขนมปัง',desc:'ขนมปังอบชีสยืดๆ กับแฮมแสนอร่อย',rating:0, image:'https://images.unsplash.com/photo-1596701042738-9538356f91f2?q=80&w=1974&auto=format&fit=crop'},
-  {id:'9',name:'โดนัทเคลือบน้ำตาล',price:25,category:'โดนัท',desc:'โดนัทเนื้อนุ่ม เคลือบน้ำตาลบางๆ',rating:0, image:'https://images.unsplash.com/photo-1551025537-b64917452d3a?q=80&w=1974&auto=format&fit=crop'},
-  {id:'10',name:'โดนัทหน้าช็อกโกแลต',price:30,category:'โดนัท',desc:'โดนัทเคลือบช็อกโกแลตโรยเกล็ดน้ำตาล',rating:0, image:'https://images.unsplash.com/photo-1558961363-fa499c016e10?q=80&w=1974&auto=format&fit=crop'}
+  {id:'2',name:'เค้กส้ม',price:100,category:'เค้ก',desc:'เค้กส้มสดชื่น หวานอมเปรี้ยว',rating:0, image:'https://api2.krua.co/wp-content/uploads/2025/01/SEO-1200x630-12.jpg'},
+  {id:'3',name:'ทาร์ตไข่',price:45,category:'พาย/ทาร์ต',desc:'ทาร์ตไข่หอมหวาน เนื้อนุ่มละมุน',rating:0, image:'https://www.sgethai.com/wp-content/uploads/2021/09/eggtart004.webp'},
+  {id:'4',name:'พายแอปเปิ้ล',price:65,category:'พาย/ทาร์ต',desc:'พายแอปเปิ้ลกรอบนอกนุ่มใน ไส้แน่น',rating:0, image:'https://img.kapook.com/u/2018/surauch/cooking/co1/apple.jpg'},
+  {id:'5',name:'คุกกี้เนยสด',price:40,category:'คุกกี้',desc:'คุกกี้เนยสดหอมๆ กรอบอร่อย',rating:0, image:'https://www.sgethai.com/wp-content/uploads/2022/06/Image09-3.webp'},
+  {id:'6',name:'ขนมปังไส้หมูหยอง',price:35,category:'ขนมปัง',desc:'ขนมปังนุ่มๆ กับหมูหยองเต็มคำ',rating:0, image:'https://snackboxbypanleebakery.wordpress.com/wp-content/uploads/2018/07/dsc9812-2.jpg'},
+  {id:'7',name:'ทอฟฟี่เค้กคลาสสิก',price:90,category:'เค้ก',desc:'ทอฟฟี่เค้กรสชาติคลาสสิก หวานมัน',rating:0, image:'https://s359.kapook.com/pagebuilder/cad7feed-8b68-4c1e-b001-e25e575c8b7e.jpg'},
+  {id:'8',name:'แฮมชีส',price:55,category:'ขนมปัง',desc:'ขนมปังอบชีสยืดๆ กับแฮมแสนอร่อย',rating:0, image:'https://www.pholfoodmafia.com/wp-content/uploads/2020/11/5Grilled-HamCheese-Sandwiches.jpg'},
+  {id:'9',name:'โดนัทเคลือบน้ำตาล',price:25,category:'โดนัท',desc:'โดนัทเนื้อนุ่ม เคลือบน้ำตาลบางๆ',rating:0, image:'https://preview.redd.it/donuts-might-be-the-most-glazed-ever-v0-zhtrwe2ks2ve1.jpeg?width=640&crop=smart&auto=webp&s=f089bd955092d42abe48e1d5e99cbc2771bc7e3d'},
+  {id:'10',name:'โดนัทหน้าช็อกโกแลต',price:30,category:'โดนัท',desc:'โดนัทเคลือบช็อกโกแลตโรยเกล็ดน้ำตาล',rating:0, image:'https://prettysimplesweet.com/wp-content/uploads/2019/07/Chocolate-Donuts.jpg'}
 ];
 
 const SAMPLE_REVIEWS = [];
@@ -217,7 +217,7 @@ function Admin({products,onAdd,onDel}){
       <h2 className="font-bold text-lg mb-2">Admin Panel</h2>
       <div className="border p-3 mb-4 rounded">
         <input className="border p-1 mr-1" placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/>
-        <input className="border p-1 mr-1 w-20" placeholder="Price" value={form.price} onChange={e=>setForm({...form,price:e.target.value})}/>
+        <input className="border p-1 mr-1 w-20" placeholder="Price" value={form.price} onChange={e=>setForm({...form,price:Number(form.price)})}/>
         <input className="border p-1 mr-1" placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/>
         <input className="border p-1 mr-1" placeholder="Desc" value={form.desc} onChange={e=>setForm({...form,desc:e.target.value})}/>
         <button className="bg-green-500 text-white px-2 py-1 rounded" onClick={()=>{
