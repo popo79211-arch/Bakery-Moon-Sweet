@@ -92,7 +92,7 @@ function Home({products, onAdd, onFav, favs, onReview}) {
     const featured = products.slice(0, 4);
     return (
         <div className="p-4">
-            <div className="relative h-64 bg-cover bg-center rounded-lg shadow-lg" style={{backgroundImage: "url('https://media.discordapp.net/attachments/782253048071716896/1418310966298284223/image.png?ex=68cda885&is=68cc5705&hm=529b3c78cada2c62996cdd93552f44cfd67c08787e5848180aa8983424df302e&=&format=webp&quality=lossless')"}}>
+            <div className="relative h-64 bg-cover bg-center rounded-lg shadow-lg" style={{backgroundImage: "url('https://i.imgur.com/GzW7w8L.png')"}}>
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center rounded-lg">
                     <h2 className="text-white text-4xl font-bold drop-shadow-lg text-center">ยินดีต้อนรับสู่ Bakery Moon Sweet</h2>
                 </div>
@@ -174,6 +174,54 @@ function Cart({items,onQty,onRemove,onCheckout,coupon,onCoupon,onClose}){
   );
 }
 
+function ShippingForm({onConfirm, onClose}) {
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name && address && phone) {
+      onConfirm({ name, address, phone });
+    } else {
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+        <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+          &times;
+        </button>
+        <h3 className="font-bold text-lg mb-4 text-center">ที่อยู่สำหรับจัดส่ง</h3>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <input
+            className="border p-2 rounded w-full"
+            placeholder="ชื่อ-นามสกุล"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          <textarea
+            className="border p-2 rounded w-full"
+            placeholder="ที่อยู่"
+            value={address}
+            onChange={e => setAddress(e.target.value)}
+            rows="4"
+          />
+          <input
+            className="border p-2 rounded w-full"
+            placeholder="เบอร์โทรศัพท์"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+          />
+          <button type="submit" className="bg-amber-600 text-white py-2 rounded mt-2">ยืนยัน</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function Profile({orders,favs, onCancelOrder, onComplaint}){
   return (
     <div className="p-4">
@@ -189,6 +237,12 @@ function Profile({orders,favs, onCancelOrder, onComplaint}){
           <div>
             <div>#{o.id} • ฿{o.total} • {o.method}</div>
             <div className="text-sm text-gray-500">สถานะ: รอจัดส่ง</div>
+            {o.shipping && (
+                <div className="text-xs text-gray-400 mt-1">
+                    จัดส่งถึง: {o.shipping.name} ({o.shipping.phone})<br/>
+                    ที่อยู่: {o.shipping.address}
+                </div>
+            )}
           </div>
           <div className="flex gap-2">
             <button
@@ -326,7 +380,7 @@ function PromptPayModal({ total, onClose, onConfirm }) {
                     สแกน QR Code เพื่อชำระเงิน (เป็นการจำลอง)
                 </p>
                 <img 
-                    src="https://media.discordapp.net/attachments/782253048071716896/1418292732111098007/IMG_3422.jpg?ex=68cd9789&is=68cc4609&hm=0bf2fa9acf5a28c98fcb98f772bcf4975bfcced53845ff9025bbcd9f9cb25c0b&=&format=webp&width=742&height=1006" 
+                    src="https://i.imgur.com/7S81T6d.jpg" 
                     alt="PromptPay QR Code" 
                     className="w-full max-w-xs mx-auto mb-4 border rounded"
                 />
@@ -350,11 +404,12 @@ function App(){
   const [favs,setFavs]=useLocal('favs',[]);
   const [user,setUser]=useLocal('user',null);
   const [coupon,setCoupon]=useState('');
-  const [cartOpen,setCartOpen]=useState(false);
+  const [cartOpen,setCartOpen]=useLocal('cartOpen',false);
   const [reviews, setReviews] = useState(SAMPLE_REVIEWS);
   const [reviewProduct, setReviewProduct] = useState(null);
   const [showPromptPayModal, setShowPromptPayModal] = useState(false);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
+  const [showShippingForm, setShowShippingForm] = useState(false);
 
   const isUserAdmin = () => user === 'admin';
 
@@ -371,21 +426,26 @@ function App(){
   const toggleFav=id=>setFavs(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]);
   
   const handleCheckout=total=>{
-    const method = prompt("Payment method (PromptPay/COD)?","PromptPay");
-    if (method === 'PromptPay') {
-      setCheckoutTotal(total);
-      setShowPromptPayModal(true);
-    } else {
-      setOrders(o=>[{id:Date.now(),total,method:method||'PromptPay'},...o]);
-      setCart([]);
-      alert("Order placed!");
-      setCartOpen(false);
-      setPage('profile');
-    }
+    setCheckoutTotal(total);
+    setShowShippingForm(true);
+  };
+  
+  const handleShippingConfirm = (shippingDetails) => {
+      setShowShippingForm(false);
+      const method = prompt("Payment method (PromptPay/COD)?","PromptPay");
+      if (method === 'PromptPay') {
+          setShowPromptPayModal(true);
+      } else {
+          setOrders(o=>[{id:Date.now(),total: checkoutTotal,method:method||'COD', shipping: shippingDetails},...o]);
+          setCart([]);
+          alert("Order placed!");
+          setCartOpen(false);
+          setPage('profile');
+      }
   };
 
   const finalizeOrderAfterPromptPay = () => {
-      setOrders(o=>[{id:Date.now(),total: checkoutTotal,method:'PromptPay'},...o]);
+      setOrders(o=>[{id:Date.now(),total: checkoutTotal,method:'PromptPay', shipping: null},...o]);
       setCart([]);
       setShowPromptPayModal(false);
       alert("Order placed!");
@@ -455,6 +515,7 @@ function App(){
       {page==='admin' && !isUserAdmin() && <div className="p-4 text-center text-red-500 font-bold">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</div>}
       {cartOpen && <Cart items={cart} onQty={qtyUpdate} onRemove={removeItem} onCheckout={handleCheckout}
                         coupon={coupon} onCoupon={setCoupon} onClose={()=>setCartOpen(false)}/>}
+      {showShippingForm && <ShippingForm onConfirm={handleShippingConfirm} onClose={()=>setShowShippingForm(false)}/>}
       {reviewProduct && (
           <ProductReviews
               product={reviewProduct}
