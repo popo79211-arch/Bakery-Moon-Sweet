@@ -24,17 +24,19 @@ function useLocal(key,init){
 
 // ---------------- MOCK DATA -----------------
 const SAMPLE_PRODUCTS = [
-  {id:'1',name:'Croissant',price:60,category:'Pastry',desc:'Buttery flaky croissant',rating:4.5, image:'https://images.unsplash.com/photo-1567620905732-2d1dc7efbdab?q=80&w=1974&auto=format&fit=crop'},
-  {id:'2',name:'Chocolate Cake',price:120,category:'Cake',desc:'Rich chocolate sponge with ganache',rating:5, image:'https://images.unsplash.com/photo-1578985545063-6f6f96ac3383?q=80&w=1974&auto=format&fit=crop'},
-  {id:'3',name:'Cappuccino',price:80,category:'Beverage',desc:'Espresso with steamed milk',rating:4.2, image:'https://images.unsplash.com/photo-1541167710266-9b4344c80321?q=80&w=1974&auto=format&fit=crop'},
-  {id:'4',name:'Macaron',price:30,category:'Pastry',desc:'Sweet meringue-based confection',rating:4.8, image:'https://images.unsplash.com/photo-1627889104193-4a1715450e18?q=80&w=1974&auto=format&fit=crop'},
-  {id:'5',name:'Blueberry Muffin',price:50,category:'Pastry',desc:'Moist muffin with fresh blueberries',rating:4.3, image:'https://images.unsplash.com/photo-1621245037520-4e314643ce4e?q=80&w=1974&auto=format&fit=crop'}
+  {id:'1',name:'เค้กช็อกโกแลต',price:120,category:'เค้ก',desc:'เค้กช็อกโกแลตเข้มข้น เนื้อนุ่มชุ่มฉ่ำ',rating:5, image:'https://images.unsplash.com/photo-1578985545063-6f6f96ac3383?q=80&w=1974&auto=format&fit=crop'},
+  {id:'2',name:'เค้กส้ม',price:100,category:'เค้ก',desc:'เค้กส้มสดชื่น หวานอมเปรี้ยว',rating:4.8, image:'https://images.unsplash.com/photo-1562776383-a7c87c24a613?q=80&w=1974&auto=format&fit=crop'},
+  {id:'3',name:'ทาร์ตไข่',price:45,category:'พาย/ทาร์ต',desc:'ทาร์ตไข่หอมหวาน เนื้อนุ่มละมุน',rating:4.7, image:'https://images.unsplash.com/photo-1628173541457-4148e6c43c44?q=80&w=1974&auto=format&fit=crop'},
+  {id:'4',name:'พายแอปเปิ้ล',price:65,category:'พาย/ทาร์ต',desc:'พายแอปเปิ้ลกรอบนอกนุ่มใน ไส้แน่น',rating:4.6, image:'https://images.unsplash.com/photo-1587399433431-7e871e459c00?q=80&w=1974&auto=format&fit=crop'},
+  {id:'5',name:'คุกกี้เนยสด',price:40,category:'คุกกี้',desc:'คุกกี้เนยสดหอมๆ กรอบอร่อย',rating:4.5, image:'https://images.unsplash.com/photo-1558961363-fa499c016e10?q=80&w=1974&auto=format&fit=crop'},
+  {id:'6',name:'ขนมปังไส้หมูหยอง',price:35,category:'ขนมปัง',desc:'ขนมปังนุ่มๆ กับหมูหยองเต็มคำ',rating:4.4, image:'https://images.unsplash.com/photo-1622323862141-94577884784a?q=80&w=1974&auto=format&fit=crop'},
+  {id:'7',name:'ทอฟฟี่เค้กคลาสสิก',price:90,category:'เค้ก',desc:'ทอฟฟี่เค้กรสชาติคลาสสิก หวานมัน',rating:4.9, image:'https://images.unsplash.com/photo-1582855118744-84d4b17b621e?q=80&w=1974&auto=format&fit=crop'},
+  {id:'8',name:'แฮมชีส',price:55,category:'ขนมปัง',desc:'ขนมปังอบชีสยืดๆ กับแฮมแสนอร่อย',rating:4.3, image:'https://images.unsplash.com/photo-1596701042738-9538356f91f2?q=80&w=1974&auto=format&fit=crop'},
+  {id:'9',name:'โดนัทเคลือบน้ำตาล',price:25,category:'โดนัท',desc:'โดนัทเนื้อนุ่ม เคลือบน้ำตาลบางๆ',rating:4.2, image:'https://images.unsplash.com/photo-1551025537-b64917452d3a?q=80&w=1974&auto=format&fit=crop'},
+  {id:'10',name:'โดนัทหน้าช็อกโกแลต',price:30,category:'โดนัท',desc:'โดนัทเคลือบช็อกโกแลตโรยเกล็ดน้ำตาล',rating:4.5, image:'https://images.unsplash.com/photo-1558961363-fa499c016e10?q=80&w=1974&auto=format&fit=crop'}
 ];
 
-const SAMPLE_REVIEWS = [
-    {id: 'r1', productId: '1', rating: 5, comment: 'อร่อยมากเลยค่ะ', user: 'Jane Doe'},
-    {id: 'r2', productId: '1', rating: 4, comment: 'กรอบนอกนุ่มใน', user: 'John Smith'}
-];
+const SAMPLE_REVIEWS = [];
 
 // --------------- Components -----------------
 function Header({cartCount,user,onNav,onCart,isAdmin,onLogout}){
