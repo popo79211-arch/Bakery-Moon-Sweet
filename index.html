@@ -31,6 +31,11 @@ const SAMPLE_PRODUCTS = [
   {id:'5',name:'Blueberry Muffin',price:50,category:'Pastry',desc:'Moist muffin with fresh blueberries',rating:4.3, image:'https://images.unsplash.com/photo-1621245037520-4e314643ce4e?q=80&w=1974&auto=format&fit=crop'}
 ];
 
+const SAMPLE_REVIEWS = [
+    {id: 'r1', productId: '1', rating: 5, comment: 'อร่อยมากเลยค่ะ', user: 'Jane Doe'},
+    {id: 'r2', productId: '1', rating: 4, comment: 'กรอบนอกนุ่มใน', user: 'John Smith'}
+];
+
 // --------------- Components -----------------
 function Header({cartCount,user,onNav,onCart}){
   return (
@@ -220,6 +225,84 @@ function Admin({products,onAdd,onDel}){
   );
 }
 
+// New Review component
+function ProductReviews({product, reviews, user, onClose, onAddReview}) {
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+
+    const handleSubmit = () => {
+        if (!user) {
+            alert("กรุณาเข้าสู่ระบบเพื่อเขียนรีวิว");
+            return;
+        }
+        if (rating === 0) {
+            alert("กรุณาให้คะแนน");
+            return;
+        }
+        onAddReview(product.id, rating, comment);
+        setRating(0);
+        setComment('');
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl">
+                    &times;
+                </button>
+                <h3 className="font-bold text-2xl mb-4">{product.name} Reviews</h3>
+                
+                {/* Existing Reviews */}
+                <div className="max-h-60 overflow-y-auto border-b pb-4 mb-4">
+                    {reviews.length > 0 ? (
+                        reviews.map(r => (
+                            <div key={r.id} className="border-t pt-2 mt-2 first:border-t-0">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-amber-700">{r.user}</span>
+                                    <span className="text-yellow-600">⭐ {r.rating}</span>
+                                </div>
+                                <p className="text-gray-600 mt-1">{r.comment}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-center">ยังไม่มีรีวิวสำหรับสินค้านี้</p>
+                    )}
+                </div>
+
+                {/* Add New Review Form */}
+                <h4 className="font-semibold text-lg mb-2">เขียนรีวิวของคุณ</h4>
+                <div className="mb-2">
+                    <label className="block text-gray-700">คะแนน:</label>
+                    <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map(star => (
+                            <span
+                                key={star}
+                                onClick={() => setRating(star)}
+                                className={`text-2xl cursor-pointer ${rating >= star ? 'text-yellow-500' : 'text-gray-300'}`}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">ความคิดเห็น:</label>
+                    <textarea
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        rows="3"
+                        placeholder="เขียนความคิดเห็นของคุณที่นี่..."
+                    ></textarea>
+                </div>
+                <button onClick={handleSubmit} className="bg-amber-600 text-white px-4 py-2 rounded w-full">
+                    ส่งรีวิว
+                </button>
+            </div>
+        </div>
+    );
+}
+
 // ---------------- Main App ------------------
 function App(){
   const [page,setPage]=useLocal('page','home');
@@ -230,6 +313,8 @@ function App(){
   const [user,setUser]=useLocal('user',null);
   const [coupon,setCoupon]=useState('');
   const [cartOpen,setCartOpen]=useState(false);
+  const [reviews, setReviews] = useLocal('reviews', SAMPLE_REVIEWS);
+  const [reviewProduct, setReviewProduct] = useState(null);
 
   function addCart(p){
     setCart(c=>{
@@ -259,6 +344,27 @@ function App(){
     }
   };
 
+  const addReview = (productId, rating, comment) => {
+      const newReview = {
+          id: Date.now().toString(),
+          productId,
+          rating,
+          comment,
+          user: user
+      };
+      setReviews(prevReviews => [...prevReviews, newReview]);
+      // Update product rating
+      const productToUpdate = products.find(p => p.id === productId);
+      if (productToUpdate) {
+          const allRatings = [...reviews.filter(r => r.productId === productId).map(r => r.rating), rating];
+          const newAvgRating = allRatings.reduce((sum, r) => sum + r, 0) / allRatings.length;
+          setProducts(prevProducts => prevProducts.map(p =>
+              p.id === productId ? { ...p, rating: newAvgRating } : p
+          ));
+      }
+      alert("รีวิวของคุณถูกส่งแล้ว");
+  };
+
   if(!user){
     const name = prompt("ใส่ชื่อผู้ใช้สำหรับจำลองการล็อกอิน");
     if(name) setUser(name);
@@ -267,17 +373,20 @@ function App(){
   return (
     <div className="min-h-screen p-4 max-w-6xl mx-auto">
       <Header cartCount={cart.reduce((s,i)=>s+i.qty,0)} user={user} onNav={setPage} onCart={()=>setCartOpen(true)}/>
-      {page==='home' && <Home products={products} onAdd={addCart} onFav={toggleFav} favs={favs} />}
-      {page==='menu' && <Menu products={products} onAdd={addCart} onFav={toggleFav} favs={favs}/>}
+      {page==='home' && <Home products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct} />}
+      {page==='menu' && <Menu products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct}/>}
       {page==='profile' && <Profile orders={orders} favs={favs} onCancelOrder={cancelOrder}/>}
       {page==='admin' && <Admin products={products} onAdd={p=>setProducts(ps=>[...ps,p])} onDel={id=>setProducts(ps=>ps.filter(x=>x.id!==id))}/>}
       {cartOpen && <Cart items={cart} onQty={qtyUpdate} onRemove={removeItem} onCheckout={checkout}
                         coupon={coupon} onCoupon={setCoupon} onClose={()=>setCartOpen(false)}/>}
+      {reviewProduct && (
+          <ProductReviews
+              product={reviewProduct}
+              reviews={reviews.filter(r => r.productId === reviewProduct.id)}
+              user={user}
+              onClose={() => setReviewProduct(null)}
+              onAddReview={addReview}
+          />
+      )}
     </div>
   );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
-</body>
-</html>
