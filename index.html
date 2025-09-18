@@ -343,14 +343,14 @@ function PromptPayModal({ total, onClose, onConfirm }) {
 // ---------------- Main App ------------------
 function App(){
   const [page,setPage]=useLocal('page','home');
-  const [products,setProducts]=useLocal('products',SAMPLE_PRODUCTS);
+  const [products,setProducts]=useState(SAMPLE_PRODUCTS); // แก้ไขตรงนี้
   const [cart,setCart]=useLocal('cart',[]);
   const [orders,setOrders]=useLocal('orders',[]);
   const [favs,setFavs]=useLocal('favs',[]);
   const [user,setUser]=useLocal('user',null);
   const [coupon,setCoupon]=useState('');
   const [cartOpen,setCartOpen]=useState(false);
-  const [reviews, setReviews] = useLocal('reviews', SAMPLE_REVIEWS);
+  const [reviews, setReviews] = useState(SAMPLE_REVIEWS); // แก้ไขตรงนี้
   const [reviewProduct, setReviewProduct] = useState(null);
   const [showPromptPayModal, setShowPromptPayModal] = useState(false);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
