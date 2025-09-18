@@ -37,7 +37,7 @@ const SAMPLE_REVIEWS = [
 ];
 
 // --------------- Components -----------------
-function Header({cartCount,user,onNav,onCart,isAdmin}){
+function Header({cartCount,user,onNav,onCart,isAdmin,onLogout}){
   return (
     <header className="bg-amber-100 border-b p-4 flex justify-between items-center">
       <h1 className="font-bold text-xl">Bakery Moon Sweet</h1>
@@ -48,6 +48,7 @@ function Header({cartCount,user,onNav,onCart,isAdmin}){
         {isAdmin && <button onClick={()=>onNav('admin')}>Admin</button>}
         <button className="bg-amber-600 text-white px-3 py-1 rounded" onClick={onCart}>Cart ({cartCount})</button>
         <span className="text-sm text-gray-700">{user ? `Hi, ${user}` : ''}</span>
+        {user && <button onClick={onLogout} className="text-sm underline text-red-500">Log out</button>}
       </div>
     </header>
   );
@@ -343,7 +344,6 @@ function App(){
   const [showPromptPayModal, setShowPromptPayModal] = useState(false);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
 
-  // New admin check function
   const isUserAdmin = () => user === 'admin';
 
   function addCart(p){
@@ -408,6 +408,12 @@ function App(){
       alert("รีวิวของคุณถูกส่งแล้ว");
   };
 
+  // New logout function
+  const handleLogout = () => {
+      setUser(null);
+      setPage('home');
+  };
+
   if(!user){
     const name = prompt("ใส่ชื่อผู้ใช้สำหรับจำลองการล็อกอิน");
     if(name) setUser(name);
@@ -415,7 +421,14 @@ function App(){
 
   return (
     <div className="min-h-screen p-4 max-w-6xl mx-auto">
-      <Header cartCount={cart.reduce((s,i)=>s+i.qty,0)} user={user} onNav={setPage} onCart={()=>setCartOpen(true)} isAdmin={isUserAdmin()}/>
+      <Header 
+        cartCount={cart.reduce((s,i)=>s+i.qty,0)} 
+        user={user} 
+        onNav={setPage} 
+        onCart={()=>setCartOpen(true)} 
+        isAdmin={isUserAdmin()} 
+        onLogout={handleLogout}
+      />
       {page==='home' && <Home products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct} />}
       {page==='menu' && <Menu products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct}/>}
       {page==='profile' && <Profile orders={orders} favs={favs} onCancelOrder={cancelOrder}/>}
