@@ -171,7 +171,7 @@ function Cart({items,onQty,onRemove,onCheckout,coupon,onCoupon,onClose}){
   );
 }
 
-function Profile({orders,favs, onCancelOrder}){
+function Profile({orders,favs, onCancelOrder, onComplaint}){
   return (
     <div className="p-4">
       <h2 className="font-bold text-lg mb-2">Profile</h2>
@@ -185,13 +185,22 @@ function Profile({orders,favs, onCancelOrder}){
         <div key={o.id} className="border p-2 my-1 flex justify-between items-center">
           <div>
             <div>#{o.id} • ฿{o.total} • {o.method}</div>
+            <div className="text-sm text-gray-500">สถานะ: รอจัดส่ง</div>
           </div>
-          <button
-            onClick={() => onCancelOrder(o.id)}
-            className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-          >
-            ยกเลิก
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => onComplaint(o.id)}
+              className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+            >
+              🚨 ร้องเรียน
+            </button>
+            <button
+              onClick={() => onCancelOrder(o.id)}
+              className="bg-gray-500 text-white text-xs px-2 py-1 rounded hover:bg-gray-600"
+            >
+              ยกเลิก
+            </button>
+          </div>
         </div>
       ))}
     </div>
@@ -388,6 +397,14 @@ function App(){
     }
   };
 
+  const handleComplaint = (orderId) => {
+    const reason = prompt("โปรดระบุปัญหาที่เกิดขึ้นกับออเดอร์ #" + orderId + ":");
+    if (reason) {
+      alert("ส่งเรื่องร้องเรียนแล้ว จะรีบดำเนินการให้เร็วที่สุดครับ/ค่ะ");
+      // ในระบบจริง จะส่งข้อมูลร้องเรียนนี้ไปยัง server เพื่อให้แอดมินดู
+    }
+  };
+
   const addReview = (productId, rating, comment) => {
       const newReview = {
           id: Date.now().toString(),
@@ -408,7 +425,6 @@ function App(){
       alert("รีวิวของคุณถูกส่งแล้ว");
   };
 
-  // New logout function
   const handleLogout = () => {
       setUser(null);
       setPage('home');
@@ -431,7 +447,7 @@ function App(){
       />
       {page==='home' && <Home products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct} />}
       {page==='menu' && <Menu products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct}/>}
-      {page==='profile' && <Profile orders={orders} favs={favs} onCancelOrder={cancelOrder}/>}
+      {page==='profile' && <Profile orders={orders} favs={favs} onCancelOrder={cancelOrder} onComplaint={handleComplaint}/>}
       {page==='admin' && isUserAdmin() && <Admin products={products} onAdd={p=>setProducts(ps=>[...ps,p])} onDel={id=>setProducts(ps=>ps.filter(x=>x.id!==id))}/>}
       {page==='admin' && !isUserAdmin() && <div className="p-4 text-center text-red-500 font-bold">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</div>}
       {cartOpen && <Cart items={cart} onQty={qtyUpdate} onRemove={removeItem} onCheckout={handleCheckout}
