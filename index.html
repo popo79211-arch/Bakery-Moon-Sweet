@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bakery Moon Sweet</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bakery Moon Sweet</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-amber-50">
 <div id="root"></div>
@@ -17,287 +17,287 @@
 const {useState,useEffect} = React;
 
 function useLocal(key,init){
-  const [val,setVal]=useState(()=>JSON.parse(localStorage.getItem(key)||'null')??init);
-  useEffect(()=>localStorage.setItem(key,JSON.stringify(val)),[key,val]);
-  return [val,setVal];
+  const [val,setVal]=useState(()=>JSON.parse(localStorage.getItem(key)||'null')??init);
+  useEffect(()=>localStorage.setItem(key,JSON.stringify(val)),[key,val]);
+  return [val,setVal];
 }
 
 // ---------------- MOCK DATA -----------------
 const SAMPLE_PRODUCTS = [
-  {id:'1',name:'Croissant',price:60,category:'Pastry',desc:'Buttery flaky croissant',rating:4.5, image:'https://images.unsplash.com/photo-1567620905732-2d1dc7efbdab?q=80&w=1974&auto=format&fit=crop'},
-  {id:'2',name:'Chocolate Cake',price:120,category:'Cake',desc:'Rich chocolate sponge with ganache',rating:5, image:'https://images.unsplash.com/photo-1578985545063-6f6f96ac3383?q=80&w=1974&auto=format&fit=crop'},
-  {id:'3',name:'Cappuccino',price:80,category:'Beverage',desc:'Espresso with steamed milk',rating:4.2, image:'https://images.unsplash.com/photo-1541167710266-9b4344c80321?q=80&w=1974&auto=format&fit=crop'},
-  {id:'4',name:'Macaron',price:30,category:'Pastry',desc:'Sweet meringue-based confection',rating:4.8, image:'https://images.unsplash.com/photo-1627889104193-4a1715450e18?q=80&w=1974&auto=format&fit=crop'},
-  {id:'5',name:'Blueberry Muffin',price:50,category:'Pastry',desc:'Moist muffin with fresh blueberries',rating:4.3, image:'https://images.unsplash.com/photo-1621245037520-4e314643ce4e?q=80&w=1974&auto=format&fit=crop'}
+  {id:'1',name:'Croissant',price:60,category:'Pastry',desc:'Buttery flaky croissant',rating:4.5, image:'https://images.unsplash.com/photo-1567620905732-2d1dc7efbdab?q=80&w=1974&auto=format&fit=crop'},
+  {id:'2',name:'Chocolate Cake',price:120,category:'Cake',desc:'Rich chocolate sponge with ganache',rating:5, image:'https://images.unsplash.com/photo-1578985545063-6f6f96ac3383?q=80&w=1974&auto=format&fit=crop'},
+  {id:'3',name:'Cappuccino',price:80,category:'Beverage',desc:'Espresso with steamed milk',rating:4.2, image:'https://images.unsplash.com/photo-1541167710266-9b4344c80321?q=80&w=1974&auto=format&fit=crop'},
+  {id:'4',name:'Macaron',price:30,category:'Pastry',desc:'Sweet meringue-based confection',rating:4.8, image:'https://images.unsplash.com/photo-1627889104193-4a1715450e18?q=80&w=1974&auto=format&fit=crop'},
+  {id:'5',name:'Blueberry Muffin',price:50,category:'Pastry',desc:'Moist muffin with fresh blueberries',rating:4.3, image:'https://images.unsplash.com/photo-1621245037520-4e314643ce4e?q=80&w=1974&auto=format&fit=crop'}
 ];
 
 const SAMPLE_REVIEWS = [
-  {id: 'r1', productId: '1', rating: 5, comment: 'อร่อยมากเลยค่ะ', user: 'Jane Doe'},
-  {id: 'r2', productId: '1', rating: 4, comment: 'กรอบนอกนุ่มใน', user: 'John Smith'}
+    {id: 'r1', productId: '1', rating: 5, comment: 'อร่อยมากเลยค่ะ', user: 'Jane Doe'},
+    {id: 'r2', productId: '1', rating: 4, comment: 'กรอบนอกนุ่มใน', user: 'John Smith'}
 ];
 
 // --------------- Components -----------------
-function Header({cartCount,user,onNav,onCart}){
-  return (
-    <header className="bg-amber-100 border-b p-4 flex justify-between items-center">
-      <h1 className="font-bold text-xl">Bakery Moon Sweet</h1>
-      <div className="flex gap-4 items-center">
-        <button onClick={()=>onNav('home')}>Home</button>
-        <button onClick={()=>onNav('menu')}>Menu</button>
-        <button onClick={()=>onNav('profile')}>Profile</button>
-        <button onClick={()=>onNav('admin')}>Admin</button>
-        <button className="bg-amber-600 text-white px-3 py-1 rounded" onClick={onCart}>Cart ({cartCount})</button>
-        <span className="text-sm text-gray-700">{user ? `Hi, ${user}` : ''}</span>
-      </div>
-    </header>
-  );
+function Header({cartCount,user,onNav,onCart,isAdmin}){
+  return (
+    <header className="bg-amber-100 border-b p-4 flex justify-between items-center">
+      <h1 className="font-bold text-xl">Bakery Moon Sweet</h1>
+      <div className="flex gap-4 items-center">
+        <button onClick={()=>onNav('home')}>Home</button>
+        <button onClick={()=>onNav('menu')}>Menu</button>
+        <button onClick={()=>onNav('profile')}>Profile</button>
+        {isAdmin && <button onClick={()=>onNav('admin')}>Admin</button>}
+        <button className="bg-amber-600 text-white px-3 py-1 rounded" onClick={onCart}>Cart ({cartCount})</button>
+        <span className="text-sm text-gray-700">{user ? `Hi, ${user}` : ''}</span>
+      </div>
+    </header>
+  );
 }
 
 function SearchBar({onChange}){
-  return (
-    <input
-      className="border p-2 w-full rounded mb-4"
-      placeholder="ค้นหาสินค้า..."
-      onChange={e=>onChange(e.target.value)}
-    />
-  );
+  return (
+    <input
+      className="border p-2 w-full rounded mb-4"
+      placeholder="ค้นหาสินค้า..."
+      onChange={e=>onChange(e.target.value)}
+    />
+  );
 }
 
 function ProductCard({p,onAdd,onFav,favs,onReview}){
-  const fav = favs.includes(p.id);
-  return (
-    <div className="border rounded-lg p-4 flex flex-col shadow-sm hover:shadow-lg transition-shadow bg-white">
-      {p.image && <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md mb-2"/>}
-      <div className="flex justify-between">
-        <div className="font-semibold text-lg">{p.name}</div>
-        <button onClick={()=>onFav(p.id)}>{fav?'❤️':'🤍'}</button>
-      </div>
-      <div className="text-xs text-gray-600">{p.category}</div>
-      <div className="mt-1 text-sm">{p.desc}</div>
-      <div className="mt-1 text-yellow-600 text-sm">⭐ {p.rating.toFixed(1)}</div>
-      <div className="flex justify-between mt-3 items-center">
-        <div className="font-bold text-lg">฿{p.price}</div>
-        <button onClick={()=>onAdd(p)} className="bg-amber-600 text-white px-2 py-1 rounded">Add</button>
-      </div>
-      <button onClick={()=>onReview(p)} className="text-xs mt-1 underline">รีวิว</button>
-    </div>
-  );
+  const fav = favs.includes(p.id);
+  return (
+    <div className="border rounded-lg p-4 flex flex-col shadow-sm hover:shadow-lg transition-shadow bg-white">
+      {p.image && <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-md mb-2"/>}
+      <div className="flex justify-between">
+        <div className="font-semibold text-lg">{p.name}</div>
+        <button onClick={()=>onFav(p.id)}>{fav?'❤️':'🤍'}</button>
+      </div>
+      <div className="text-xs text-gray-600">{p.category}</div>
+      <div className="mt-1 text-sm">{p.desc}</div>
+      <div className="mt-1 text-yellow-600 text-sm">⭐ {p.rating.toFixed(1)}</div>
+      <div className="flex justify-between mt-3 items-center">
+        <div className="font-bold text-lg">฿{p.price}</div>
+        <button onClick={()=>onAdd(p)} className="bg-amber-600 text-white px-2 py-1 rounded">Add</button>
+      </div>
+      <button onClick={()=>onReview(p)} className="text-xs mt-1 underline">รีวิว</button>
+    </div>
+  );
 }
 
 function Home({products, onAdd, onFav, favs, onReview}) {
-    const featured = products.slice(0, 4);
-    return (
-        <div className="p-4">
-            <div className="relative h-64 bg-cover bg-center rounded-lg shadow-lg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1542826189-9a706b8720ca?q=80&w=1974&auto=format&fit=crop')"}}>
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center rounded-lg">
-                    <h2 className="text-white text-4xl font-bold drop-shadow-lg text-center">ยินดีต้อนรับสู่ Bakery Moon Sweet</h2>
-                </div>
-            </div>
+    const featured = products.slice(0, 4);
+    return (
+        <div className="p-4">
+            <div className="relative h-64 bg-cover bg-center rounded-lg shadow-lg" style={{backgroundImage: "url('https://images.unsplash.com/photo-1542826189-9a706b8720ca?q=80&w=1974&auto=format&fit=crop')"}}>
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center rounded-lg">
+                    <h2 className="text-white text-4xl font-bold drop-shadow-lg text-center">ยินดีต้อนรับสู่ Bakery Moon Sweet</h2>
+                </div>
+            </div>
 
-            <div className="mt-8">
-                <h3 className="font-bold text-2xl mb-4 text-center text-amber-800">สินค้าแนะนำ</h3>
-                <div className="grid md:grid-cols-4 gap-4">
-                    {featured.map(p => <ProductCard key={p.id} p={p} onAdd={onAdd} onFav={onFav} favs={favs} onReview={onReview}/>)}
-                </div>
-            </div>
+            <div className="mt-8">
+                <h3 className="font-bold text-2xl mb-4 text-center text-amber-800">สินค้าแนะนำ</h3>
+                <div className="grid md:grid-cols-4 gap-4">
+                    {featured.map(p => <ProductCard key={p.id} p={p} onAdd={onAdd} onFav={onFav} favs={favs} onReview={onReview}/>)}
+                </div>
+            </div>
 
-            <div className="mt-8 bg-amber-200 p-6 rounded-lg shadow-md text-center">
-                <h3 className="font-bold text-2xl text-amber-800">โปรโมชั่นพิเศษ!</h3>
-                <p className="mt-2 text-amber-700 text-lg">รับส่วนลด 10% เมื่อสั่งซื้อครบ 500 บาท</p>
-                <p className="font-semibold text-amber-900 mt-1">ใช้โค้ด: SWEET10</p>
-            </div>
-            
-            <div className="mt-8 text-center text-gray-700">
-                <h3 className="font-bold text-2xl text-amber-800">เกี่ยวกับเรา</h3>
-                <p className="mt-2 text-lg">
-                    เราอบขนมด้วยความรักและความใส่ใจทุกขั้นตอน
-                    เพื่อมอบความสุขให้กับทุกคนผ่านรสชาติที่หอมหวานและนุ่มละมุน
-                    มาร่วมแบ่งปันช่วงเวลาดีๆ กับเบเกอรี่ของเราสิครับ/ค่ะ!
-                </p>
-            </div>
-        </div>
-    );
+            <div className="mt-8 bg-amber-200 p-6 rounded-lg shadow-md text-center">
+                <h3 className="font-bold text-2xl text-amber-800">โปรโมชั่นพิเศษ!</h3>
+                <p className="mt-2 text-amber-700 text-lg">รับส่วนลด 10% เมื่อสั่งซื้อครบ 500 บาท</p>
+                <p className="font-semibold text-amber-900 mt-1">ใช้โค้ด: SWEET10</p>
+            </div>
+            
+            <div className="mt-8 text-center text-gray-700">
+                <h3 className="font-bold text-2xl text-amber-800">เกี่ยวกับเรา</h3>
+                <p className="mt-2 text-lg">
+                    เราอบขนมด้วยความรักและความใส่ใจทุกขั้นตอน
+                    เพื่อมอบความสุขให้กับทุกคนผ่านรสชาติที่หอมหวานและนุ่มละมุน
+                    มาร่วมแบ่งปันช่วงเวลาดีๆ กับเบเกอรี่ของเราสิครับ/ค่ะ!
+                </p>
+            </div>
+        </div>
+    );
 }
 
 function Menu({products,onAdd,onFav,favs,onReview}){
-  const [filter,setFilter]=useState('');
-  const [search,setSearch]=useState('');
-  const cats=['All',...new Set(products.map(p=>p.category))];
-  const shown = products.filter(p=>
-    (filter===''||filter==='All'||p.category===filter) &&
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
-  return (
-    <div className="p-4">
-      <SearchBar onChange={setSearch}/>
-      <select value={filter} onChange={e=>setFilter(e.target.value)} className="border p-1 mb-4">
-        {cats.map(c=><option key={c}>{c}</option>)}
-      </select>
-      <div className="grid md:grid-cols-3 gap-4">
-        {shown.map(p=><ProductCard key={p.id} p={p} onAdd={onAdd} onFav={onFav} favs={favs} onReview={onReview}/>)}
-      </div>
-    </div>
-  );
+  const [filter,setFilter]=useState('');
+  const [search,setSearch]=useState('');
+  const cats=['All',...new Set(products.map(p=>p.category))];
+  const shown = products.filter(p=>
+    (filter===''||filter==='All'||p.category===filter) &&
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+  return (
+    <div className="p-4">
+      <SearchBar onChange={setSearch}/>
+      <select value={filter} onChange={e=>setFilter(e.target.value)} className="border p-1 mb-4">
+        {cats.map(c=><option key={c}>{c}</option>)}
+      </select>
+      <div className="grid md:grid-cols-3 gap-4">
+        {shown.map(p=><ProductCard key={p.id} p={p} onAdd={onAdd} onFav={onFav} favs={favs} onReview={onReview}/>)}
+      </div>
+    </div>
+  );
 }
 
 function Cart({items,onQty,onRemove,onCheckout,coupon,onCoupon,onClose}){
-  const subtotal = items.reduce((s,i)=>s+i.price*i.qty,0);
-  const discount = coupon==='BAKE10'? subtotal*0.1 : 0;
-  const total = subtotal - discount;
-  return (
-    <div className="fixed top-20 right-4 w-80 bg-white border p-4 rounded shadow z-50">
-      <div className="flex justify-between mb-2">
-        <h3 className="font-semibold">Cart</h3>
-        <button onClick={onClose}>X</button>
-      </div>
-      {items.map(i=>
-        <div key={i.id} className="flex justify-between mb-2">
-          <span>{i.name}</span>
-          <div className="flex gap-1 items-center">
-            <button onClick={()=>onQty(i.id,i.qty-1)}>-</button>
-            {i.qty}
-            <button onClick={()=>onQty(i.id,i.qty+1)}>+</button>
-            <button onClick={()=>onRemove(i.id)} className="text-red-500">x</button>
-          </div>
-        </div>
-      )}
-      <input className="border p-1 w-full mb-2" placeholder="ใส่คูปอง" value={coupon} onChange={e=>onCoupon(e.target.value)}/>
-      <div>Subtotal: ฿{subtotal}</div>
-      {discount>0 && <div className="text-green-600">Discount: -฿{discount}</div>}
-      <div className="font-bold">Total: ฿{total}</div>
-      <button className="w-full bg-amber-600 text-white py-1 mt-2 rounded" onClick={()=>onCheckout(total)}>Checkout</button>
-    </div>
-  );
+  const subtotal = items.reduce((s,i)=>s+i.price*i.qty,0);
+  const discount = coupon==='BAKE10'? subtotal*0.1 : 0;
+  const total = subtotal - discount;
+  return (
+    <div className="fixed top-20 right-4 w-80 bg-white border p-4 rounded shadow z-50">
+      <div className="flex justify-between mb-2">
+        <h3 className="font-semibold">Cart</h3>
+        <button onClick={onClose}>X</button>
+      </div>
+      {items.map(i=>
+        <div key={i.id} className="flex justify-between mb-2">
+          <span>{i.name}</span>
+          <div className="flex gap-1 items-center">
+            <button onClick={()=>onQty(i.id,i.qty-1)}>-</button>
+            {i.qty}
+            <button onClick={()=>onQty(i.id,i.qty+1)}>+</button>
+            <button onClick={()=>onRemove(i.id)} className="text-red-500">x</button>
+          </div>
+        </div>
+      )}
+      <input className="border p-1 w-full mb-2" placeholder="ใส่คูปอง" value={coupon} onChange={e=>onCoupon(e.target.value)}/>
+      <div>Subtotal: ฿{subtotal}</div>
+      {discount>0 && <div className="text-green-600">Discount: -฿{discount}</div>}
+      <div className="font-bold">Total: ฿{total}</div>
+      <button className="w-full bg-amber-600 text-white py-1 mt-2 rounded" onClick={()=>onCheckout(total)}>Checkout</button>
+    </div>
+  );
 }
 
 function Profile({orders,favs, onCancelOrder}){
-  return (
-    <div className="p-4">
-      <h2 className="font-bold text-lg mb-2">Profile</h2>
-      <h3 className="font-semibold mt-2">Favorites</h3>
-      <ul className="list-disc ml-5">
-        {favs.length?favs.map(f=><li key={f}>{f}</li>):<li>ไม่มีรายการโปรด</li>}
-      </ul>
-      <h3 className="font-semibold mt-4">Orders</h3>
-      {orders.length===0 && <p>ยังไม่มีออเดอร์</p>}
-      {orders.map(o=>(
-        <div key={o.id} className="border p-2 my-1 flex justify-between items-center">
-          <div>
-            <div>#{o.id} • ฿{o.total} • {o.method}</div>
-          </div>
-          <button
-            onClick={() => onCancelOrder(o.id)}
-            className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-          >
-            ยกเลิก
-          </button>
-        </div>
-      ))}
-    </div>
-  );
+  return (
+    <div className="p-4">
+      <h2 className="font-bold text-lg mb-2">Profile</h2>
+      <h3 className="font-semibold mt-2">Favorites</h3>
+      <ul className="list-disc ml-5">
+        {favs.length?favs.map(f=><li key={f}>{f}</li>):<li>ไม่มีรายการโปรด</li>}
+      </ul>
+      <h3 className="font-semibold mt-4">Orders</h3>
+      {orders.length===0 && <p>ยังไม่มีออเดอร์</p>}
+      {orders.map(o=>(
+        <div key={o.id} className="border p-2 my-1 flex justify-between items-center">
+          <div>
+            <div>#{o.id} • ฿{o.total} • {o.method}</div>
+          </div>
+          <button
+            onClick={() => onCancelOrder(o.id)}
+            className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+          >
+            ยกเลิก
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function Admin({products,onAdd,onDel}){
-  const [form,setForm]=useState({name:'',price:'',category:'',desc:''});
-  return (
-    <div className="p-4">
-      <h2 className="font-bold text-lg mb-2">Admin Panel</h2>
-      <div className="border p-3 mb-4 rounded">
-        <input className="border p-1 mr-1" placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/>
-        <input className="border p-1 mr-1 w-20" placeholder="Price" value={form.price} onChange={e=>setForm({...form,price:e.target.value})}/>
-        <input className="border p-1 mr-1" placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/>
-        <input className="border p-1 mr-1" placeholder="Desc" value={form.desc} onChange={e=>setForm({...form,desc:e.target.value})}/>
-        <button className="bg-green-500 text-white px-2 py-1 rounded" onClick={()=>{
-          if(form.name&&form.price){
-            onAdd({...form,price:Number(form.price),id:Date.now().toString(),rating:0});
-            setForm({name:'',price:'',category:'',desc:''});
-          }
-        }}>Add</button>
-      </div>
-      <h3 className="font-semibold">Current Products</h3>
-      {products.map(p=>(
-        <div key={p.id} className="flex justify-between border-b py-1">
-          {p.name} ฿{p.price}
-          <button className="text-red-600" onClick={()=>onDel(p.id)}>Delete</button>
-        </div>
-      ))}
-    </div>
-  );
+  const [form,setForm]=useState({name:'',price:'',category:'',desc:''});
+  return (
+    <div className="p-4">
+      <h2 className="font-bold text-lg mb-2">Admin Panel</h2>
+      <div className="border p-3 mb-4 rounded">
+        <input className="border p-1 mr-1" placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/>
+        <input className="border p-1 mr-1 w-20" placeholder="Price" value={form.price} onChange={e=>setForm({...form,price:e.target.value})}/>
+        <input className="border p-1 mr-1" placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/>
+        <input className="border p-1 mr-1" placeholder="Desc" value={form.desc} onChange={e=>setForm({...form,desc:e.target.value})}/>
+        <button className="bg-green-500 text-white px-2 py-1 rounded" onClick={()=>{
+          if(form.name&&form.price){
+            onAdd({...form,price:Number(form.price),id:Date.now().toString(),rating:0});
+            setForm({name:'',price:'',category:'',desc:''});
+          }
+        }}>Add</button>
+      </div>
+      <h3 className="font-semibold">Current Products</h3>
+      {products.map(p=>(
+        <div key={p.id} className="flex justify-between border-b py-1">
+          {p.name} ฿{p.price}
+          <button className="text-red-600" onClick={()=>onDel(p.id)}>Delete</button>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function ProductReviews({product, reviews, user, onClose, onAddReview}) {
-    const [rating, setRating] = useState(0);
-    const [comment, setComment] = useState('');
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
 
-    const handleSubmit = () => {
-        if (!user) {
-            alert("กรุณาเข้าสู่ระบบเพื่อเขียนรีวิว");
-            return;
-        }
-        if (rating === 0) {
-            alert("กรุณาให้คะแนน");
-            return;
-        }
-        onAddReview(product.id, rating, comment);
-        setRating(0);
-        setComment('');
-    };
+    const handleSubmit = () => {
+        if (!user) {
+            alert("กรุณาเข้าสู่ระบบเพื่อเขียนรีวิว");
+            return;
+        }
+        if (rating === 0) {
+            alert("กรุณาให้คะแนน");
+            return;
+        }
+        onAddReview(product.id, rating, comment);
+        setRating(0);
+        setComment('');
+    };
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl">
-                    &times;
-                </button>
-                <h3 className="font-bold text-2xl mb-4">{product.name} Reviews</h3>
-                
-                <div className="max-h-60 overflow-y-auto border-b pb-4 mb-4">
-                    {reviews.length > 0 ? (
-                        reviews.map(r => (
-                            <div key={r.id} className="border-t pt-2 mt-2 first:border-t-0">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-amber-700">{r.user}</span>
-                                    <span className="text-yellow-600">⭐ {r.rating}</span>
-                                </div>
-                                <p className="text-gray-600 mt-1">{r.comment}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-500 text-center">ยังไม่มีรีวิวสำหรับสินค้านี้</p>
-                    )}
-                </div>
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl">
+                    &times;
+                </button>
+                <h3 className="font-bold text-2xl mb-4">{product.name} Reviews</h3>
+                
+                <div className="max-h-60 overflow-y-auto border-b pb-4 mb-4">
+                    {reviews.length > 0 ? (
+                        reviews.map(r => (
+                            <div key={r.id} className="border-t pt-2 mt-2 first:border-t-0">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-amber-700">{r.user}</span>
+                                    <span className="text-yellow-600">⭐ {r.rating}</span>
+                                </div>
+                                <p className="text-gray-600 mt-1">{r.comment}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-center">ยังไม่มีรีวิวสำหรับสินค้านี้</p>
+                    )}
+                </div>
 
-                <h4 className="font-semibold text-lg mb-2">เขียนรีวิวของคุณ</h4>
-                <div className="mb-2">
-                    <label className="block text-gray-700">คะแนน:</label>
-                    <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map(star => (
-                            <span
-                                key={star}
-                                onClick={() => setRating(star)}
-                                className={`text-2xl cursor-pointer ${rating >= star ? 'text-yellow-500' : 'text-gray-300'}`}
-                            >
-                                ★
-                            </span>
-                        ))}
-                    </div>
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">ความคิดเห็น:</label>
-                    <textarea
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        className="border p-2 w-full rounded"
-                        rows="3"
-                        placeholder="เขียนความคิดเห็นของคุณที่นี่..."
-                    ></textarea>
-                </div>
-                <button onClick={handleSubmit} className="bg-amber-600 text-white px-4 py-2 rounded w-full">
-                    ส่งรีวิว
-                </button>
-            </div>
-        </div>
-    );
+                <h4 className="font-semibold text-lg mb-2">เขียนรีวิวของคุณ</h4>
+                <div className="mb-2">
+                    <label className="block text-gray-700">คะแนน:</label>
+                    <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map(star => (
+                            <span
+                                key={star}
+                                onClick={() => setRating(star)}
+                                className={`text-2xl cursor-pointer ${rating >= star ? 'text-yellow-500' : 'text-gray-300'}`}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">ความคิดเห็น:</label>
+                    <textarea
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        rows="3"
+                        placeholder="เขียนความคิดเห็นของคุณที่นี่..."
+                    ></textarea>
+                </div>
+                <button onClick={handleSubmit} className="bg-amber-600 text-white px-4 py-2 rounded w-full">
+                    ส่งรีวิว
+                </button>
+            </div>
+        </div>
+    );
 }
 
 function PromptPayModal({ total, onClose, onConfirm }) {
@@ -342,6 +342,9 @@ function App(){
   const [reviewProduct, setReviewProduct] = useState(null);
   const [showPromptPayModal, setShowPromptPayModal] = useState(false);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
+
+  // New admin check function
+  const isUserAdmin = () => user === 'admin';
 
   function addCart(p){
     setCart(c=>{
@@ -412,11 +415,12 @@ function App(){
 
   return (
     <div className="min-h-screen p-4 max-w-6xl mx-auto">
-      <Header cartCount={cart.reduce((s,i)=>s+i.qty,0)} user={user} onNav={setPage} onCart={()=>setCartOpen(true)}/>
+      <Header cartCount={cart.reduce((s,i)=>s+i.qty,0)} user={user} onNav={setPage} onCart={()=>setCartOpen(true)} isAdmin={isUserAdmin()}/>
       {page==='home' && <Home products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct} />}
       {page==='menu' && <Menu products={products} onAdd={addCart} onFav={toggleFav} favs={favs} onReview={setReviewProduct}/>}
       {page==='profile' && <Profile orders={orders} favs={favs} onCancelOrder={cancelOrder}/>}
-      {page==='admin' && <Admin products={products} onAdd={p=>setProducts(ps=>[...ps,p])} onDel={id=>setProducts(ps=>ps.filter(x=>x.id!==id))}/>}
+      {page==='admin' && isUserAdmin() && <Admin products={products} onAdd={p=>setProducts(ps=>[...ps,p])} onDel={id=>setProducts(ps=>ps.filter(x=>x.id!==id))}/>}
+      {page==='admin' && !isUserAdmin() && <div className="p-4 text-center text-red-500 font-bold">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</div>}
       {cartOpen && <Cart items={cart} onQty={qtyUpdate} onRemove={removeItem} onCheckout={handleCheckout}
                         coupon={coupon} onCoupon={setCoupon} onClose={()=>setCartOpen(false)}/>}
       {reviewProduct && (
